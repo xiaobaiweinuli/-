@@ -1,0 +1,65 @@
+// ==UserScript==
+// @name         AutoPlayNextVideo on 51ixuejiao.com
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  在51ixuejiao.com网站上，在不同页面上自动播放下一个视频
+// @author       You
+// @match        https://www.51ixuejiao.com/web/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    
+    // 获取章节列表
+    const chapterList = document.querySelectorAll('.chapter-list li');
+    
+    // 获取当前页面的路径
+    const currentPath = window.location.pathname;
+    
+    // 根据路径选择不同的视频列表
+    let videoList;
+    switch (currentPath) {
+        case '/web/1':
+            videoList = [
+                { url: 'https://example.com/video1.mp4', title: 'Video 1' },
+                { url: 'https://example.com/video2.mp4', title: 'Video 2' },
+                // ...
+            ];
+            break;
+        case '/web/2':
+            videoList = [
+                { url: 'https://example.com/video3.mp4', title: 'Video 3' },
+                { url: 'https://example.com/video4.mp4', title: 'Video 4' },
+                // ...
+            ];
+            break;
+        default:
+            console.error('Unknown path:', currentPath);
+            return;
+    }
+    
+    // 选择第一个视频元素并播放
+    const firstVideoElement = document.querySelector('video');
+    if (firstVideoElement) {
+        firstVideoElement.src = videoList[0].url;
+        firstVideoElement.play();
+    } else {
+        console.error('No video element found');
+    }
+    
+    // 监听视频结束事件
+    firstVideoElement.addEventListener('ended', function() {
+        // 选择并播放下一个视频
+        const nextVideoIndex = videoList.indexOf(firstVideoElement.src) + 1;
+        if (nextVideoIndex< videoList.length) {
+            const nextVideoElement = document.createElement('video');
+            nextVideoElement.src = videoList[nextVideoIndex].url;
+            nextVideoElement.title = videoList[nextVideoIndex].title;
+            document.body.appendChild(nextVideoElement);
+            nextVideoElement.play();
+        } else {
+            console.log('End of video list');
+        }
+    });
+})();
