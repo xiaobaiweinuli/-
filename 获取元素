@@ -1,0 +1,18 @@
+// 获取所有的 card-context 元素
+const cardContexts = document.querySelectorAll('card-context');
+
+// 遍历所有的 card-context 元素
+for (let i = 0; i < cardContexts.length; i++) {
+  // 获取当前 card-context 元素的文本内容
+  const content = cardContexts[i].textContent.trim();
+
+  // 如果文本内容是 A、B、C 或 D，则在控制台中显示序号和内容
+  if (content === 'A' || content === 'B' || content === 'C' || content === 'D') {
+    console.log(`${i + 1}. ${content}`);
+  }
+
+  // 如果文本内容是正确或错误，则在控制台中显示序号和内容
+  else if (content === '正确' || content === '错误') {
+    console.log(`${i + 1}. ${content}`);
+  }
+}
