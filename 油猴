@@ -1,35 +1,42 @@
-// ==UserScript==
-// @name         Auto Click Confirm Button
-// @namespace    your_namespace
-// @version      1
-// @description  Automatically click the confirm button when it appears
-// @author       your_name
-// @include      *
-// @grant        none
-// ==/UserScript==
+// ==UserScript==
+// @name        AutoClickConfirmButton
+// @namespace   your_namespace
+// @version     1
+// @description Automatically click the confirm button when it appears
+// @author      your_name
+// @include     *
+// @grant       none
+// ==/UserScript==
 
-(function() {
-    'use strict';
+(function() {
+    'use strict';
 
-    // 定义一个函数，用于查找并点击按钮
-    function clickConfirmButton() {
-        // 查找所有按钮
-        const buttons = document.querySelectorAll('button');
+    // 定义一个函数，用于查找并点击按钮
+    function clickConfirmButton() {
+        // 查找所有按钮
+        const buttons = document.querySelectorAll('button');
 
-        // 遍历所有按钮
-        buttons.forEach((button) => {
-            // 获取按钮的文本内容
-            const buttonText = button.textContent.trim();
+        // 遍历所有按钮
+        buttons.forEach((button) => {
+            try {
+                // 获取按钮的文本内容
+                const buttonText = button.textContent.trim();
 
-            // 如果按钮的文本内容是“确定”
-            if (buttonText === '确定') {
-                // 自动点击按钮
-                button.click();
-                console.log('Confirm button clicked:', button);
-            }
-        });
-    }
+                // 如果按钮的文本内容是“确定”
+                if (buttonText === '确定') {
+                    // 自动点击按钮
+                    button.click();
+                    console.log('Confirm button clicked:', button);
 
-    // 每隔1秒钟检查一次按钮
-    setInterval(clickConfirmButton, 1000);
+                    // 清除定时器以避免重复点击
+                    clearInterval(intervalId);
+                }
+            } catch (e) {
+                console.error('Error when trying to click confirm button:', e);
+            }
+        });
+    }
+
+    // 使用setTimeout来初始化检查，而不是setInterval
+    let intervalId = setInterval(clickConfirmButton, 1000);
 })();
